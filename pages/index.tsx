@@ -13,16 +13,32 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 import Forecast from '../components/Forecast'
 import DetailItem from '../components/DetailItem'
+import { useSnapshot } from 'valtio'
+import state from '../context/state'
+import useSWR from 'swr'
+import { getWeather } from '../lib/api'
 
 SwiperCore.use([Pagination])
 
+const date = new Date(Date.now())
+const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+
 const Index: React.FC = () => {
 	const [showLoader, setShowLoader] = React.useState(false)
+	const { selectedCity } = useSnapshot(state)
+	const { data: weatherInfo } = useSWR(selectedCity ? 'weatherInfo' : null, () =>
+		getWeather(selectedCity?.value!)
+	)
 
 	React.useEffect(() => {
 		const timerId = setTimeout(() => {
 			setShowLoader(false)
 		}, 1000)
+
+		const city = localStorage.getItem('city')
+		if (city) {
+			state.selectedCity = JSON.parse(city)
+		}
 
 		return () => {
 			clearTimeout(timerId)
@@ -36,7 +52,7 @@ const Index: React.FC = () => {
 		</Head>
 	)
 
-	if (showLoader) {
+	if (showLoader || !weatherInfo) {
 		return (
 			<>
 				{meta}
@@ -49,55 +65,88 @@ const Index: React.FC = () => {
 		<div className="container py-10 px-6">
 			{meta}
 			<Header />
-			<Swiper
-				slidesPerView={1}
-				spaceBetween={30}
-				loop={true}
-				pagination={{
-					clickable: true,
-				}}
-			>
-				<SwiperSlide>
-					<Card center>
-						<h2 className="text-lg">Monday, 04 November 2020</h2>
-						<p className="mt-5">
-							<span className="text-8xl">22</span>
-							<span className="text-3xl">°C</span>
-						</p>
-						<div className="flex space-x-6 mt-10">
-							<TempLevel deg={16} level="LOW" />
-							<TempLevel deg={22} level="HIGH" />
-						</div>
-						<WeatherIcon />
+			{selectedCity ? (
+				<Swiper
+					slidesPerView={1}
+					spaceBetween={30}
+					loop={true}
+					pagination={{
+						clickable: true,
+					}}
+				>
+					<SwiperSlide>
+						<Card center>
+							<h2 className="text-lg">
+								{date.toLocaleDateString('de-DE', options as any)}
+							</h2>
+							<p className="mt-5">
+								<span className="text-8xl">{weatherInfo.main.temp}</span>
+								<span className="text-3xl">°C</span>
+							</p>
+							<div className="flex space-x-6 mt-10">
+								<TempLevel deg={weatherInfo.main.temp_min} level="LOW" />
+								<TempLevel deg={weatherInfo.main.temp_max} level="HIGH" />
+							</div>
+							<WeatherIcon weather={weatherInfo.weather[0]} />
 
-						<div className="flex space-x-6 mt-10">
-							<Sunset time="07:38 AM" level="HIGH" />
-							<Sunset time="06:10 PM" level="LOW" />
-						</div>
-					</Card>
-				</SwiperSlide>
+							<div className="flex space-x-6 mt-10">
+								<Sunset
+									time={new Date(
+										weatherInfo.sys.sunrise * 1000
+									).toLocaleTimeString('de-DE')}
+									level="HIGH"
+								/>
+								<Sunset
+									time={new Date(
+										weatherInfo.sys.sunset * 1000
+									).toLocaleTimeString('de-DE')}
+									level="LOW"
+								/>
+							</div>
+						</Card>
+					</SwiperSlide>
 
-				<SwiperSlide>
-					<Card>
-						<h2 className="text-xl">Details</h2>
-						<div className="flex flex-col gap-5 mt-8">
-							<DetailItem title="Prcipitation" value="0.0 mm" />
-							<DetailItem title="SE Wind" value="10.23 km/h" />
-						</div>
-					</Card>
-				</SwiperSlide>
+					<SwiperSlide>
+						<Card>
+							<h2 className="text-xl">Details</h2>
+							<div className="flex flex-col gap-5 mt-8">
+								<DetailItem
+									title="Pressure"
+									value={weatherInfo.main.pressure + ' hpa'}
+								/>
+								<DetailItem
+									title="Wind Speed"
+									value={weatherInfo.wind.speed + ' m/s'}
+								/>
+								<DetailItem
+									title="Wind Temperature"
+									value={weatherInfo.wind.deg + ' °C'}
+								/>
+								<DetailItem title="Clouds" value={weatherInfo.clouds.all + '%'} />
+								<DetailItem
+									title="Visibility"
+									value={weatherInfo.visibility / 1000 + 'km'}
+								/>
+							</div>
+						</Card>
+					</SwiperSlide>
 
-				<SwiperSlide>
-					<Card>
-						<h2 className="text-xl">Forecast</h2>
-						<Forecast type="HOURLY" />
-						<Forecast type="DAILY" />
-					</Card>
-				</SwiperSlide>
+					<SwiperSlide>
+						<Card>
+							<h2 className="text-xl">Forecast</h2>
+							<Forecast type="HOURLY" />
+							<Forecast type="DAILY" />
+						</Card>
+					</SwiperSlide>
 
-				<div className="flex justify-between my-4" />
-				<p className="text-xs font-light italic">Last update at 13:00 PM</p>
-			</Swiper>
+					<div className="flex justify-between my-4" />
+					<p className="text-xs font-light italic">
+						Last update at {new Date(weatherInfo.dt * 1000).toLocaleTimeString('de-DE')}
+					</p>
+				</Swiper>
+			) : (
+				<h1>No city selected yet!</h1>
+			)}
 		</div>
 	)
 }

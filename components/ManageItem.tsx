@@ -1,3 +1,5 @@
+import { useRouter } from 'next/dist/client/router'
+import state from '../context/state'
 import { City } from '../lib/types'
 
 interface Props {
@@ -6,10 +8,20 @@ interface Props {
 }
 
 const ManageItem: React.FC<Props> = ({ city, deleteCity }) => {
+	const { push } = useRouter()
 	return (
 		<div className="flex justify-between items-center">
 			<div>
-				<button className="text-lg text-blue-600 border-b-2">{city.label}</button>
+				<button
+					className="text-lg text-blue-600 border-b-2"
+					onClick={() => {
+						localStorage.setItem('city', JSON.stringify(city))
+						state.selectedCity = city
+						push('/')
+					}}
+				>
+					{city.label}
+				</button>
 				{/* <p className="text-sm">22°C</p> */}
 				{/* <p className="text-xs font-extralight">Light Rain</p> */}
 			</div>
