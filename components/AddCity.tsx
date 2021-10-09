@@ -3,24 +3,29 @@ import React, { Fragment } from 'react'
 import Select from 'react-select'
 import useSWR from 'swr'
 import useCountries from '../hooks/useCountries'
-import { Country } from '../lib/types'
+import { City, Country } from '../lib/types'
 
 interface Props {
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+	setCities: React.Dispatch<React.SetStateAction<City[]>>
 }
 
-const AddCity: React.FC<Props> = ({ setIsOpen }) => {
-	const { data } = useSWR<Country[]>('/countries', useCountries)
-	const [location, setLocation] = React.useState<any>(null)
+const AddCity: React.FC<Props> = ({ setIsOpen, setCities }) => {
+	let { data } = useSWR<Country[]>('/countries', useCountries)
+	const [city, setCity] = React.useState<any>(null)
 
 	const handleSave = () => {
 		const cities = localStorage.getItem('cities')
 
 		if (!cities) {
-			localStorage.setItem('cities', JSON.stringify([cities]))
+			localStorage.setItem('cities', JSON.stringify([city]))
 		} else {
 			const _cities: [] = JSON.parse(cities)
-			localStorage.setItem('cities', JSON.stringify([..._cities, location]))
+			const foundCity = _cities.find((c: any) => c.value === city.value)
+			if (!foundCity) {
+				localStorage.setItem('cities', JSON.stringify([..._cities, city]))
+				setCities([..._cities, city])
+			}
 		}
 		setIsOpen(false)
 	}
@@ -70,7 +75,7 @@ const AddCity: React.FC<Props> = ({ setIsOpen }) => {
 									City
 								</label>
 								<Select
-									onChange={(v) => setLocation(v)}
+									onChange={(v) => setCity(v)}
 									isDisabled={!data}
 									placeholder={!data ? 'Loading cities...' : 'Select city'}
 									options={

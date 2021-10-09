@@ -7,3 +7,8 @@ export type Country = {
     capital: string,
     region: string
 }
+
+export type City = {
+    value: string
+    label: string
+}
