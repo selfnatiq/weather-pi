@@ -1,7 +1,2 @@
 @import 'tailwindcss/tailwind.css';
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
-
-.grid-center {
-	display: grid;
-	place-items: center;
-}
