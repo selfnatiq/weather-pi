@@ -9,7 +9,7 @@ const Header = () => {
 			<nav className="flex justify-between items-center">
 				<div>
 					<h2 className="text-lg">{selectedCity ? selectedCity.label : 'No City'}</h2>
-					<p className="text-xs font-extralight">Current Location</p>
+					<p className="text-xs font-extralight">Aktueller Standort</p>
 				</div>
 				<div className="flex items-center">
 					<Link href="/manage">

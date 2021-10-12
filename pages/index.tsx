@@ -12,7 +12,7 @@ import DetailItem from '../components/DetailItem'
 import useCurrent from '../hooks/useCurrent'
 import ForecastDay from '../components/ForecastDay'
 import useForecast from '../hooks/useForecast'
-import useCity from '../hooks/useCity'
+import state from '../context/state'
 
 SwiperCore.use([Pagination])
 
@@ -20,14 +20,19 @@ const Index: React.FC = () => {
 	const [showLoader, setShowLoader] = React.useState(true)
 	const current = useCurrent()
 	const forecast = useForecast()
-	const city = useCity()
-
-	console.log(city)
 
 	React.useEffect(() => {
 		const timerId = setTimeout(() => {
 			setShowLoader(false)
 		}, 1000)
+
+		const city = localStorage.getItem('city')
+		if (city) {
+			state.selectedCity = JSON.parse(city)
+		} else {
+			//  temp default value
+			state.selectedCity = { value: 2661552, label: 'Bern, Switzerland' }
+		}
 
 		return () => {
 			clearTimeout(timerId)
