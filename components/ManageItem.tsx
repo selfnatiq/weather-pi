@@ -1,13 +1,25 @@
 import { useRouter } from 'next/dist/client/router'
 import state from '../context/state'
-import { City } from '../lib/types'
+import { LSCity } from '../lib/types'
 
 interface Props {
-	city: City
-	deleteCity: (city: City) => void
+	city: LSCity
+	setCities: React.Dispatch<React.SetStateAction<LSCity[]>>
 }
 
-const ManageItem: React.FC<Props> = ({ city, deleteCity }) => {
+const ManageItem: React.FC<Props> = ({ city, setCities }) => {
+	const deleteCity = (city: LSCity) => {
+		const cities = localStorage.getItem('cities')
+
+		if (cities) {
+			let _cities: LSCity[] = JSON.parse(cities)
+			const foundCity = _cities.findIndex((c) => c.value === city.value)
+			_cities.splice(foundCity, 1)
+			localStorage.setItem('cities', JSON.stringify(_cities))
+			setCities(_cities)
+		}
+	}
+
 	const { push } = useRouter()
 	return (
 		<div className="flex justify-between items-center">

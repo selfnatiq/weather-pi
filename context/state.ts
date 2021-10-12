@@ -1,7 +1,7 @@
 import { proxy } from 'valtio'
-import { City } from '../lib/types'
+import { LSCity } from '../lib/types'
 
-const state: { selectedCity: City | null; weatherInfo: any } = proxy({
+const state: { selectedCity: LSCity | null; weatherInfo: any } = proxy({
     showManage: false,
     selectedCity: null,
     weatherInfo: {}

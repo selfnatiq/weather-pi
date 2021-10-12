@@ -1,32 +1,39 @@
 import { Dialog, Transition } from '@headlessui/react'
 import React, { Fragment } from 'react'
 import Select from 'react-select'
-import useSWR from 'swr'
-import useCountries from '../hooks/useCountries'
-import { City, Country } from '../lib/types'
+import useSWR, { mutate } from 'swr'
+import useCities from '../hooks/useCities'
+import citiesFetcher from '../lib/citiesFetcher'
+import { City, Country, LSCity } from '../lib/types'
 
 interface Props {
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-	setCities: React.Dispatch<React.SetStateAction<City[]>>
+	setCities: React.Dispatch<React.SetStateAction<LSCity[]>>
 }
 
 const AddCity: React.FC<Props> = ({ setIsOpen, setCities }) => {
-	let { data } = useSWR<Country[]>('/countries', useCountries)
-	const [city, setCity] = React.useState<any>(null)
+	let { data } = useSWR<City[]>('/cities', citiesFetcher, {
+		refreshInterval: 60 * 1000,
+		revalidateIfStale: false,
+	})
+
+	const [city, setCity] = React.useState<LSCity | null>(null)
 
 	const handleSave = () => {
 		const cities = localStorage.getItem('cities')
+		let _cities: LSCity[]
 
 		if (!cities) {
-			localStorage.setItem('cities', JSON.stringify([city]))
+			_cities = [city!]
+			localStorage.setItem('cities', JSON.stringify([_cities]))
 		} else {
-			const _cities: [] = JSON.parse(cities)
-			const foundCity = _cities.find((c: any) => c.value === city.value)
+			_cities = JSON.parse(cities)
+			const foundCity = _cities.find((c) => c.value === city!.value)
 			if (!foundCity) {
 				localStorage.setItem('cities', JSON.stringify([..._cities, city]))
-				setCities([..._cities, city])
 			}
 		}
+		setCities([..._cities, city!])
 		setIsOpen(false)
 	}
 
@@ -76,17 +83,25 @@ const AddCity: React.FC<Props> = ({ setIsOpen, setCities }) => {
 								</label>
 								<Select
 									onChange={(v) => setCity(v)}
+									onInputChange={(v) => {
+										if (v.length > 2) {
+											mutate(
+												'/cities',
+												citiesFetcher('/cities?cityName_contains=' + v),
+												false
+											)
+										}
+									}}
 									isDisabled={!data}
 									placeholder={!data ? 'Loading cities...' : 'Select city'}
 									options={
 										data &&
 										data
-											.filter((country) => country.capital.length)
-											.map((country) => ({
-												value: country.capital,
-												label: `${country.capital}, ${country.name}`,
+											.map((city) => ({
+												value: city.cityId,
+												label: `${city.cityName}, ${city.country}`,
 											}))
-											.sort((a, b) => (a.value > b.value ? 1 : -1))
+											.sort((a, b) => (a.label > b.label ? 1 : -1))
 									}
 								/>
 							</div>

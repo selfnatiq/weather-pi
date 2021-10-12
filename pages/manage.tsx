@@ -3,32 +3,16 @@ import Link from 'next/link'
 
 import AddCity from '../components/AddCity'
 import ManageItem from '../components/ManageItem'
-import { City } from '../lib/types'
+import { LSCity } from '../lib/types'
 
 const Manage: React.FC = () => {
 	const [isOpen, setIsOpen] = React.useState(false)
-	const [cities, setCities] = React.useState<City[]>([])
+	const [cities, setCities] = React.useState<LSCity[]>([])
 
 	React.useEffect(() => {
-		const _cities = localStorage.getItem('cities')
-
-		if (_cities) {
-			setCities(JSON.parse(_cities))
-		}
+		let _cities = localStorage.getItem('cities')
+		if (_cities) setCities(JSON.parse(_cities))
 	}, [])
-
-	const deleteCity = (city: City) => {
-		const cities = localStorage.getItem('cities')
-
-		if (cities) {
-			let _cities: City[] = JSON.parse(cities)
-			const foundCity = _cities.findIndex((c) => c.value === city.value)
-			_cities.splice(foundCity, 1)
-			localStorage.setItem('cities', JSON.stringify(_cities))
-
-			setCities(_cities)
-		}
-	}
 
 	return (
 		<div className="container py-10 px-6">
@@ -74,7 +58,7 @@ const Manage: React.FC = () => {
 				<div className="flex flex-col mt-10 px-1 gap-6">
 					{cities.length ? (
 						cities.map((city) => (
-							<ManageItem key={city.value} city={city} deleteCity={deleteCity} />
+							<ManageItem key={city.value} city={city} setCities={setCities} />
 						))
 					) : (
 						<h1>No cities found</h1>

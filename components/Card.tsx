@@ -7,7 +7,7 @@ const Card: React.FC<Props> = ({ children, center }) => {
 		<main
 			className={`flex flex-col ${
 				center ? 'items-center' : 'items-start'
-			} justify-center mt-14 py-5`}
+			} justify-center mt-16 mb-5`}
 		>
 			{children}
 		</main>
