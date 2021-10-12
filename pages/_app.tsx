@@ -25,7 +25,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 		<React.Fragment>
 			<Head>
 				<title>WeatherPi</title>
-				<link rel="icon" href="/favicon.ico" />
+				<link rel="icon" href="/logo.png" />
+				<link rel="manifest" href="manifest.json" />
+				<link rel="icon" type="image/png" href="/icons/favicon-16x16.png" sizes="16x16" />
+				<link rel="icon" type="image/png" href="/icons/favicon-32x32.png" sizes="32x32" />
+				<link rel="icon" type="image/png" href="/icons/icon-192x192.png" sizes="192x192" />
+				<link rel="apple-touch-icon" href="/icons/icon-192x192.png" sizes="180x180" />
+				<meta name="msapplication-config" content="/iconx/browserconfig.xml" />
 			</Head>
 			<Component {...pageProps} />
 		</React.Fragment>
