@@ -2,9 +2,8 @@ import { Dialog, Transition } from '@headlessui/react'
 import React, { Fragment } from 'react'
 import Select from 'react-select'
 import useSWR, { mutate } from 'swr'
-import useCities from '../hooks/useCities'
 import citiesFetcher from '../lib/citiesFetcher'
-import { City, Country, LSCity } from '../lib/types'
+import type { City, LSCity } from '../lib/types'
 
 interface Props {
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -87,7 +86,9 @@ const AddCity: React.FC<Props> = ({ setIsOpen, setCities }) => {
 										if (v.length > 2) {
 											mutate(
 												'/cities',
-												citiesFetcher('/cities?cityName_contains=' + v),
+												citiesFetcher(
+													`/cities?_where[_or][0][cityName_contains]=${v}&_where[_or][1][country_contains]=${v}`
+												),
 												false
 											)
 										}

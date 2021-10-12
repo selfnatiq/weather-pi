@@ -3,7 +3,6 @@ import SwiperCore, { Pagination } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/pagination'
-import Loader from '../components/Loader'
 import Header from '../components/Header'
 import WeatherIcon from '../components/WeatherIcon'
 import Sunset from '../components/Sunset'
@@ -17,15 +16,10 @@ import state from '../context/state'
 SwiperCore.use([Pagination])
 
 const Index: React.FC = () => {
-	const [showLoader, setShowLoader] = React.useState(true)
 	const current = useCurrent()
 	const forecast = useForecast()
 
 	React.useEffect(() => {
-		const timerId = setTimeout(() => {
-			setShowLoader(false)
-		}, 1000)
-
 		const city = localStorage.getItem('city')
 		if (city) {
 			state.selectedCity = JSON.parse(city)
@@ -33,13 +27,7 @@ const Index: React.FC = () => {
 			//  temp default value
 			state.selectedCity = { value: 2661552, label: 'Bern, Switzerland' }
 		}
-
-		return () => {
-			clearTimeout(timerId)
-		}
 	}, [])
-
-	if (showLoader) return <Loader />
 
 	return (
 		<div className="container py-10 px-6">
