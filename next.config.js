@@ -7,8 +7,9 @@ module.exports = withPWA({
 		register: true,
 		skipWaiting: true,
 		runtimeCaching,
-		importScripts: ['/service-worker.js'],
-		// disable: process.env.NODE_ENV === 'development',
+		// this worker allows to show the installation banner
+		importScripts: ['service-worker.js'],
+		disable: process.env.NODE_ENV === 'development',
 	},
 
 	reactStrictMode: true,
