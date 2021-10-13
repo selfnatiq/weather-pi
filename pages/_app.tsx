@@ -27,10 +27,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 				<title>WeatherPi</title>
 				<link rel="icon" href="/logo.png" />
 				<link rel="manifest" href="manifest.json" />
-				<link rel="icon" type="image/png" href="/icons/favicon-16x16.png" sizes="16x16" />
-				<link rel="icon" type="image/png" href="/icons/favicon-32x32.png" sizes="32x32" />
-				<link rel="icon" type="image/png" href="/icons/icon-192x192.png" sizes="192x192" />
-				<link rel="apple-touch-icon" href="/icons/icon-192x192.png" sizes="180x180" />
+				<meta name="theme-color" content="#ffffff" />
+
+				<link rel="icon" type="image/png" href="/images/icon-36x36.png" sizes="36x36" />
+				<link rel="icon" type="image/png" href="/images/icon-96x96.png" sizes="96x96" />
+				<link rel="icon" type="image/png" href="/images/icon-192.png" sizes="192x192" />
+
+				<link rel="apple-touch-icon" href="/images/icon-192.png" sizes="192x192" />
 				<meta name="msapplication-config" content="/iconx/browserconfig.xml" />
 			</Head>
 			<Component {...pageProps} />
