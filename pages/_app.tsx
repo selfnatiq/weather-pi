@@ -35,6 +35,11 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 				<link rel="apple-touch-icon" href="/images/icon-192.png" sizes="192x192" />
 				<meta name="msapplication-config" content="/iconx/browserconfig.xml" />
+
+				<meta
+					name="viewport"
+					content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
+				/>
 			</Head>
 			<Component {...pageProps} />
 		</React.Fragment>

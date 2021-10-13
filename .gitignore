@@ -33,7 +33,7 @@ yarn-error.log*
 # vercel
 .vercel
 
-sw.js
-sw.js.map
-workbox-*
-fallback-*
+**/public/workbox-*
+**/public/sw*
+**/public/worker-*
+**/public/fallback-*
