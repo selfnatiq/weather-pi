@@ -8,7 +8,6 @@ module.exports = withPWA({
 		skipWaiting: true,
 		runtimeCaching,
 		// this worker allows to show the installation banner
-		importScripts: ['service-worker.js'],
 		disable: process.env.NODE_ENV === 'development',
 	},
 

@@ -12,12 +12,16 @@ import useCurrent from '../hooks/useCurrent'
 import ForecastDay from '../components/ForecastDay'
 import useForecast from '../hooks/useForecast'
 import state from '../context/state'
+import InstallPrompt from '../components/InstallPrompt'
 
 SwiperCore.use([Pagination])
 
 const Index: React.FC = () => {
 	const current = useCurrent()
 	const forecast = useForecast()
+
+	const [deferredPrompt, setDeferredPrompt] = React.useState<Event | null>(null)
+	const [installPromt, setInstallPromt] = React.useState(false)
 
 	React.useEffect(() => {
 		const city = localStorage.getItem('city')
@@ -27,10 +31,42 @@ const Index: React.FC = () => {
 			//  temp default value
 			state.selectedCity = { value: 2661552, label: 'Bern, Switzerland' }
 		}
+
+		window.addEventListener('beforeinstallprompt', (e) => {
+			// Prevent the mini-infobar from appearing on mobile
+			e.preventDefault()
+			// Stash the event so it can be triggered later.
+			setDeferredPrompt(e)
+			// Update UI notify the user they can install the PWA
+			setInstallPromt(true)
+			// Optionally, send analytics event that PWA install promo was shown.
+			console.log(`'beforeinstallprompt' event was fired.`)
+		})
 	}, [])
 
 	return (
 		<div className="container py-10 px-6">
+			{/* {installPromt && (
+				<button
+					onClick={async () => {
+						// Hide the app provided install promotion
+						setInstallPromt(false)
+						// Show the install prompt
+						// @ts-ignore
+						deferredPrompt.prompt()
+						// Wait for the user to respond to the prompt
+						//@ts-ignore
+						const { outcome } = await deferredPrompt.userChoice
+						// Optionally, send analytics event with outcome of user choice
+						console.log(`User response to the install prompt: ${outcome}`)
+						// We've used the prompt, and can't use it again, throw it away
+						setDeferredPrompt(null)
+					}}
+					className="bg-indigo-400 w-full py-5 rounded-lg shadow-lg text-white text-xl font-bold tracking-wider transition animate-pulse"
+				>
+					Install WeatherPi
+				</button>
+			)} */}
 			<Header />
 			<Swiper
 				slidesPerView={1}
@@ -97,6 +133,7 @@ const Index: React.FC = () => {
 			<p className="text-xs font-light italic mt-3">
 				Last update at {new Date(current.ts * 1000).toLocaleTimeString('de-DE')}
 			</p>
+			<InstallPrompt />
 		</div>
 	)
 }
