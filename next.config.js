@@ -8,7 +8,7 @@ module.exports = withPWA({
 		skipWaiting: true,
 		runtimeCaching,
 		// this worker allows to show the installation banner
-		// disable: process.env.NODE_ENV === 'development',
+		disable: process.env.NODE_ENV === 'development',
 	},
 
 	reactStrictMode: true,

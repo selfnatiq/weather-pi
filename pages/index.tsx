@@ -13,36 +13,27 @@ import ForecastDay from '../components/ForecastDay'
 import useForecast from '../hooks/useForecast'
 import state from '../context/state'
 import InstallPrompt from '../components/InstallPrompt'
+import { useRouter } from 'next/dist/client/router'
 
 SwiperCore.use([Pagination])
 
 const Index: React.FC = () => {
 	const current = useCurrent()
 	const forecast = useForecast()
-
-	const [deferredPrompt, setDeferredPrompt] = React.useState<Event | null>(null)
-	const [installPromt, setInstallPromt] = React.useState(false)
+	const { push } = useRouter()
 
 	React.useEffect(() => {
 		const city = localStorage.getItem('city')
 		if (city) {
 			state.selectedCity = JSON.parse(city)
 		} else {
-			//  temp default value
-			state.selectedCity = { value: 2661552, label: 'Bern, Switzerland' }
+			push('/manage?reason=no_city')
 		}
-
-		window.addEventListener('beforeinstallprompt', (e) => {
-			// Prevent the mini-infobar from appearing on mobile
-			e.preventDefault()
-			// Stash the event so it can be triggered later.
-			setDeferredPrompt(e)
-			// Update UI notify the user they can install the PWA
-			setInstallPromt(true)
-			// Optionally, send analytics event that PWA install promo was shown.
-			console.log(`'beforeinstallprompt' event was fired.`)
-		})
 	}, [])
+
+	if (!current || !forecast) {
+		return <h1>Wird geladen...</h1>
+	}
 
 	return (
 		<div className="container py-10 px-6">
@@ -69,7 +60,7 @@ const Index: React.FC = () => {
 							<span className="text-8xl">{current.temp}</span>
 							<span className="text-3xl">°C</span>
 						</p>
-						<p className="mt-10">Feels like {current.app_temp} °C</p>
+						<p className="mt-10">Fühlt sich an wie {current.app_temp} °C</p>
 						<WeatherIcon
 							icon={current.weather.icon}
 							description={current.weather.description}
@@ -84,21 +75,24 @@ const Index: React.FC = () => {
 
 				<SwiperSlide>
 					<Card>
-						<h2 className="text-xl">Details</h2>
+						<h2 className="text-xl">Weitere Details</h2>
 						<div className="flex flex-col gap-5 mt-8">
-							<DetailItem title="Pressure" value={current.pres + ' mb'} />
-							<DetailItem title="Wind speed" value={current.wind_spd + ' m/s'} />
-							<DetailItem title="Wind direction" value={current.wind_dir + '°'} />
-							<DetailItem title="Clouds" value={current.clouds + '%'} />
-							<DetailItem title="Visibility" value={current.vis + ' km'} />
-							<DetailItem title="Humidity" value={current.rh + '%'} />
+							<DetailItem title="Druck" value={current.pres + ' mb'} />
+							<DetailItem
+								title="Windgeschwindigkeit"
+								value={current.wind_spd + ' m/s'}
+							/>
+							<DetailItem title="Windrichtung" value={current.wind_dir + '°'} />
+							<DetailItem title="Wolken" value={current.clouds + '%'} />
+							<DetailItem title="Sichtweite" value={current.vis + ' km'} />
+							<DetailItem title="Feuchtigkeit" value={current.rh + '%'} />
 						</div>
 					</Card>
 				</SwiperSlide>
 
 				<SwiperSlide>
 					<div className="mt-16 mb-5">
-						<h2 className="text-xl mb-5">Next 16 Days</h2>
+						<h2 className="text-xl mb-5">Nächste 16 Tage</h2>
 						<div className="flex flex-col gap-6 max-h-[480px] overflow-y-scroll">
 							{forecast.map((fc) => (
 								<ForecastDay key={fc.valid_date} forecast={fc} />
@@ -110,7 +104,7 @@ const Index: React.FC = () => {
 				<div className="flex justify-between mt-10" />
 			</Swiper>
 			<p className="text-xs font-light italic mt-3">
-				Last update at {new Date(current.ts * 1000).toLocaleTimeString('de-DE')}
+				Letztes Update um {new Date(current.ts * 1000).toLocaleTimeString('de-DE')}
 			</p>
 			<InstallPrompt />
 		</div>

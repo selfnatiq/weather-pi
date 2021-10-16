@@ -4,6 +4,7 @@ import 'swiper/css/bundle'
 import React from 'react'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
+import { SWRConfig } from 'swr'
 
 import Loader from '../components/Loader'
 
@@ -23,7 +24,14 @@ function MyApp({ Component, pageProps }: AppProps) {
 	if (showLoader) return <Loader />
 
 	return (
-		<React.Fragment>
+		<SWRConfig
+			value={{
+				refreshInterval: 15 * 60_000,
+				revalidateIfStale: false,
+				revalidateOnFocus: false,
+				revalidateOnReconnect: false,
+			}}
+		>
 			<Head>
 				<title>WeatherPi</title>
 				<link rel="icon" href="/logo.png" />
@@ -42,8 +50,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 					content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
 				/>
 			</Head>
+
 			<Component {...pageProps} />
-		</React.Fragment>
+		</SWRConfig>
 	)
 }
 

@@ -84,12 +84,13 @@ const InstallPrompt: React.FC = () => {
 						>
 							<div className="bottom-2 right-2 left-2 absolute p-6 overflow-hidden text-left align-middle transition-all bg-purple-700 text-white rounded-2xl">
 								<Dialog.Title as="h3" className="text-lg font-medium leading-6">
-									Install WeatherPi
+									WeatherPi installieren
 								</Dialog.Title>
 								<div className="mt-2">
 									<p className="text-sm ">
-										Installing uses almost no storage and provides a quick way
-										to return to this app.
+										Die Installation verbraucht fast keinen Speicherplatz und
+										bietet eine schnelle Möglichkeit, zu dieser App
+										zurückzukehren.
 									</p>
 								</div>
 
@@ -99,14 +100,14 @@ const InstallPrompt: React.FC = () => {
 										className="inline-flex justify-center px-4 py-2 text-sm font-medium bg-white text-purple-700 border border-transparent rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-purple-700"
 										onClick={installPromptWindow}
 									>
-										Install
+										Installieren
 									</button>
 									<button
 										type="button"
 										className="text-gray-300 text-sm"
 										onClick={cancelInstallPrompt}
 									>
-										Not now
+										Nicht jetzt!
 									</button>
 								</div>
 							</div>

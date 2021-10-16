@@ -12,24 +12,26 @@ interface Props {
 
 const AddCity: React.FC<Props> = ({ setIsOpen, setCities }) => {
 	let { data } = useSWR<City[]>('/cities', citiesFetcher, {
-		refreshInterval: 60 * 1000,
+		refreshInterval: 60 * 10000,
 		revalidateIfStale: false,
 	})
 
 	const [city, setCity] = React.useState<LSCity | null>(null)
 
 	const handleSave = () => {
+		if (!city) return
+
 		const cities = localStorage.getItem('cities')
 		let _cities: LSCity[]
 
 		if (!cities) {
-			_cities = [city!]
+			_cities = [city]
 			localStorage.setItem('cities', JSON.stringify(_cities))
 		} else {
 			_cities = JSON.parse(cities)
-			const foundCity = _cities.find((c) => c.value === city!.value)
+			const foundCity = _cities.find((c) => c.value === city.value)
 			if (!foundCity) {
-				_cities = [..._cities, city!]
+				_cities = [..._cities, city]
 				localStorage.setItem('cities', JSON.stringify(_cities))
 			}
 		}
@@ -72,7 +74,7 @@ const AddCity: React.FC<Props> = ({ setIsOpen, setCities }) => {
 								as="h3"
 								className="text-lg font-medium leading-6 text-gray-900"
 							>
-								Add City
+								Stadt hinzufügen
 							</Dialog.Title>
 
 							<div className="mt-2 flex flex-col gap-2">
@@ -80,7 +82,7 @@ const AddCity: React.FC<Props> = ({ setIsOpen, setCities }) => {
 									htmlFor="city"
 									className="block text-sm font-medium text-gray-700"
 								>
-									City
+									Stadt
 								</label>
 								<Select
 									onChange={(v) => setCity(v)}
@@ -96,7 +98,7 @@ const AddCity: React.FC<Props> = ({ setIsOpen, setCities }) => {
 										}
 									}}
 									isDisabled={!data}
-									placeholder={!data ? 'Loading cities...' : 'Select city'}
+									placeholder={!data ? 'Wird geladen...' : 'Auswählen'}
 									options={
 										data &&
 										data
@@ -115,7 +117,7 @@ const AddCity: React.FC<Props> = ({ setIsOpen, setCities }) => {
 									className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
 									onClick={handleSave}
 								>
-									Got it
+									Ich habs!
 								</button>
 							</div>
 						</div>

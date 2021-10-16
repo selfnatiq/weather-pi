@@ -33,7 +33,7 @@ const Manage: React.FC = () => {
 								d="M15 19l-7-7 7-7"
 							/>
 						</svg>
-						<p>Select City</p>
+						<p>Stadt wählen</p>
 					</a>
 				</Link>
 				<button onClick={() => setIsOpen(true)}>
@@ -61,7 +61,7 @@ const Manage: React.FC = () => {
 							<ManageItem key={city.value} city={city} setCities={setCities} />
 						))
 					) : (
-						<h1>No cities found</h1>
+						<h1>Keine Städte gefunden</h1>
 					)}
 				</div>
 			</main>

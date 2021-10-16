@@ -1,6 +1,11 @@
 export type Level = 'HIGH' | 'LOW'
 export type ForecastType = 'DAILY' | 'HOURLY'
 
+export type CurrentResponse = {
+    data: Current[];
+    count: number;
+}
+
 export type Current = {
     rh: number;
     pod: string;
@@ -38,6 +43,16 @@ export type Current = {
     station: string;
     elev_angle: number;
     app_temp: number;
+}
+
+export type ForecastResponse = {
+    data: Forecast[];
+    city_name: string;
+    lon: string;
+    timezone: string;
+    lat: string;
+    country_code: string;
+    state_code: string;
 }
 
 export type Forecast = {
@@ -109,3 +124,6 @@ export type LSCity = {
     value: number;
     label: string;
 }
+
+
+
