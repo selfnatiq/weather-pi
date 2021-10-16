@@ -12,7 +12,6 @@ import useCurrent from '../hooks/useCurrent'
 import ForecastDay from '../components/ForecastDay'
 import useForecast from '../hooks/useForecast'
 import state from '../context/state'
-import InstallPrompt from '../components/InstallPrompt'
 import { useRouter } from 'next/dist/client/router'
 
 SwiperCore.use([Pagination])
@@ -106,7 +105,6 @@ const Index: React.FC = () => {
 			<p className="text-xs font-light italic mt-3">
 				Letztes Update um {new Date(current.ts * 1000).toLocaleTimeString('de-DE')}
 			</p>
-			<InstallPrompt />
 		</div>
 	)
 }

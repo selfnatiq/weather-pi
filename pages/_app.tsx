@@ -7,6 +7,7 @@ import Head from 'next/head'
 import { SWRConfig } from 'swr'
 
 import Loader from '../components/Loader'
+import InstallPrompt from '../components/InstallPrompt'
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const [showLoader, setShowLoader] = React.useState(true)
@@ -50,8 +51,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 					content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
 				/>
 			</Head>
-
 			<Component {...pageProps} />
+			<InstallPrompt />
 		</SWRConfig>
 	)
 }
