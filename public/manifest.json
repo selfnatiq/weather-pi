@@ -1,6 +1,6 @@
 {
     "short_name": "WeatherPi",
-    "name": "WeatherPi: How's the weather like?",
+    "name": "WeatherPi",
     "icons": [
         {
             "src": "/images/icon-192.png",
@@ -11,12 +11,6 @@
             "src": "/images/icon-512.png",
             "type": "image/png",
             "sizes": "512x512"
-        },
-        {
-            "src": "/images/icon-512.png",
-            "type": "image/png",
-            "sizes": "512x512",
-            "purpose": "maskable"
         }
     ],
     "start_url": "/?source=pwa",
@@ -36,6 +30,13 @@
             "src": "/images/sc2.png",
             "type": "image/png",
             "sizes": "750x1620"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Manage Cities",
+            "url": "/manage",
+            "description": "Add cities and manage them"
         }
     ]
 }

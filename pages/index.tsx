@@ -46,27 +46,6 @@ const Index: React.FC = () => {
 
 	return (
 		<div className="container py-10 px-6">
-			{/* {installPromt && (
-				<button
-					onClick={async () => {
-						// Hide the app provided install promotion
-						setInstallPromt(false)
-						// Show the install prompt
-						// @ts-ignore
-						deferredPrompt.prompt()
-						// Wait for the user to respond to the prompt
-						//@ts-ignore
-						const { outcome } = await deferredPrompt.userChoice
-						// Optionally, send analytics event with outcome of user choice
-						console.log(`User response to the install prompt: ${outcome}`)
-						// We've used the prompt, and can't use it again, throw it away
-						setDeferredPrompt(null)
-					}}
-					className="bg-indigo-400 w-full py-5 rounded-lg shadow-lg text-white text-xl font-bold tracking-wider transition animate-pulse"
-				>
-					Install WeatherPi
-				</button>
-			)} */}
 			<Header />
 			<Swiper
 				slidesPerView={1}

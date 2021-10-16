@@ -24,15 +24,17 @@ const AddCity: React.FC<Props> = ({ setIsOpen, setCities }) => {
 
 		if (!cities) {
 			_cities = [city!]
-			localStorage.setItem('cities', JSON.stringify([_cities]))
+			localStorage.setItem('cities', JSON.stringify(_cities))
 		} else {
 			_cities = JSON.parse(cities)
 			const foundCity = _cities.find((c) => c.value === city!.value)
 			if (!foundCity) {
-				localStorage.setItem('cities', JSON.stringify([..._cities, city]))
+				_cities = [..._cities, city!]
+				localStorage.setItem('cities', JSON.stringify(_cities))
 			}
 		}
-		setCities([..._cities, city!])
+
+		setCities(_cities)
 		setIsOpen(false)
 	}
 
