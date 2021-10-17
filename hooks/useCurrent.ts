@@ -9,7 +9,6 @@ const mock: CurrentResponse =
 
 const useCurrent = () => {
 	const { selectedCity } = useSnapshot(state)
-	console.log(selectedCity)
 	const { data } = useSWR<CurrentResponse>(!isDev && selectedCity ? `current-${selectedCity.value}` : null, () => fetch(`${api}/current?city_id=${selectedCity?.value}&lang=de&key=${API_KEY}`).then(res => res.json()))
 
 	return isDev ? mock.data[0] : data?.data[0]
