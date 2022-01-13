@@ -1,9 +1,11 @@
+import Image from 'next/image'
+
 const Loading = () => {
 	return (
-		<div className="flex items-center justify-center space-x-2 animate-pulse h-screen">
-			<div className="w-4 h-4 bg-indigo-600 rounded-full" />
-			<div className="w-4 h-4 bg-indigo-600 rounded-full" />
-			<div className="w-4 h-4 bg-indigo-600 rounded-full" />
+		<div className="flex flex-col items-center justify-center h-screen">
+			<div className="animate-bounce opacity-60">
+				<Image src="/images/icon-192.png" alt="Icon" width={100} height={100} />
+			</div>
 		</div>
 	)
 }

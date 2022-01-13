@@ -14,6 +14,7 @@ import useForecast from '../hooks/useForecast'
 import state from '../context/state'
 import { useRouter } from 'next/dist/client/router'
 import { roundByTwo } from '../lib/utils'
+import Loading from '../components/Loading'
 
 SwiperCore.use([Pagination])
 
@@ -32,7 +33,7 @@ const Index: React.FC = () => {
 	}, [])
 
 	if (!current || !forecast) {
-		return <h1>Wird geladen...</h1>
+		return <Loading />
 	}
 
 	return (
