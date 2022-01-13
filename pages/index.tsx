@@ -13,6 +13,7 @@ import ForecastDay from '../components/ForecastDay'
 import useForecast from '../hooks/useForecast'
 import state from '../context/state'
 import { useRouter } from 'next/dist/client/router'
+import { roundByTwo } from '../lib/utils'
 
 SwiperCore.use([Pagination])
 
@@ -76,18 +77,21 @@ const Index: React.FC = () => {
 					<Card>
 						<h2 className="text-xl">Weitere Details</h2>
 						<div className="flex flex-col gap-5 mt-8">
-							<DetailItem title="Druck" value={current.pres + ' mb'} />
+							<DetailItem title="Druck" value={roundByTwo(current.pres) + ' mb'} />
 							<DetailItem
 								title="Windgeschwindigkeit"
-								value={
-									Math.round((current.wind_spd + Number.EPSILON) * 100) / 100 +
-									' m/s'
-								}
+								value={roundByTwo(current.wind_spd) + ' m/s'}
 							/>
-							<DetailItem title="Windrichtung" value={current.wind_dir + '°'} />
-							<DetailItem title="Wolken" value={current.clouds + '%'} />
-							<DetailItem title="Sichtweite" value={current.vis + ' km'} />
-							<DetailItem title="Feuchtigkeit" value={current.rh + '%'} />
+							<DetailItem
+								title="Windrichtung"
+								value={roundByTwo(current.wind_dir) + '°'}
+							/>
+							<DetailItem title="Wolken" value={roundByTwo(current.clouds) + '%'} />
+							<DetailItem
+								title="Sichtweite"
+								value={roundByTwo(current.vis) + ' km'}
+							/>
+							<DetailItem title="Feuchtigkeit" value={roundByTwo(current.rh) + '%'} />
 						</div>
 					</Card>
 				</SwiperSlide>
