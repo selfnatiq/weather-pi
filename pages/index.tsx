@@ -79,7 +79,10 @@ const Index: React.FC = () => {
 							<DetailItem title="Druck" value={current.pres + ' mb'} />
 							<DetailItem
 								title="Windgeschwindigkeit"
-								value={current.wind_spd + ' m/s'}
+								value={
+									Math.round((current.wind_spd + Number.EPSILON) * 100) / 100 +
+									' m/s'
+								}
 							/>
 							<DetailItem title="Windrichtung" value={current.wind_dir + '°'} />
 							<DetailItem title="Wolken" value={current.clouds + '%'} />
