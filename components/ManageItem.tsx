@@ -1,4 +1,3 @@
-import { useRouter } from 'next/dist/client/router'
 import state from '../context/state'
 import { LSCity } from '../lib/types'
 
@@ -20,7 +19,6 @@ const ManageItem: React.FC<Props> = ({ city, setCities }) => {
 		}
 	}
 
-	const { push } = useRouter()
 	return (
 		<div className="flex justify-between items-center">
 			<div>
@@ -29,7 +27,7 @@ const ManageItem: React.FC<Props> = ({ city, setCities }) => {
 					onClick={() => {
 						localStorage.setItem('city', JSON.stringify(city))
 						state.selectedCity = city
-						push('/')
+						state.showManage = false
 					}}
 				>
 					{city.label}

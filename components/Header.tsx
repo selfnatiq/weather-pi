@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { useSnapshot } from 'valtio'
 import state from '../context/state'
 
@@ -12,7 +11,7 @@ const Header = () => {
 					<p className="text-xs font-extralight">Aktueller Standort</p>
 				</div>
 				<div className="flex items-center">
-					<Link href="/manage">
+					<button onClick={() => (state.showManage = true)}>
 						<a>
 							<svg
 								className="w-7 h-7 text-gray-600"
@@ -29,7 +28,7 @@ const Header = () => {
 								/>
 							</svg>
 						</a>
-					</Link>
+					</button>
 				</div>
 			</nav>
 		</header>

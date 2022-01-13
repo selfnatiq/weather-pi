@@ -15,6 +15,7 @@ import state from '../context/state'
 import { useRouter } from 'next/dist/client/router'
 import { roundByTwo } from '../lib/utils'
 import Loading from '../components/Loading'
+import Manage from '../components/Manage'
 
 SwiperCore.use([Pagination])
 
@@ -37,7 +38,7 @@ const Index: React.FC = () => {
 	}
 
 	return (
-		<div className="container py-10 px-6">
+		<div className="container py-10 px-6 overflow-x-hidden">
 			<Header />
 			<Swiper
 				slidesPerView={1}
@@ -113,6 +114,8 @@ const Index: React.FC = () => {
 			<p className="text-xs font-light italic mt-3">
 				Letztes Update um {new Date(current.ts * 1000).toLocaleTimeString('de-DE')}
 			</p>
+
+			<Manage />
 		</div>
 	)
 }
