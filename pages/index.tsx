@@ -12,7 +12,6 @@ import useCurrent from '../hooks/useCurrent'
 import ForecastDay from '../components/ForecastDay'
 import useForecast from '../hooks/useForecast'
 import state from '../context/state'
-import { useRouter } from 'next/dist/client/router'
 import { roundByTwo } from '../lib/utils'
 import Loading from '../components/Loading'
 import Manage from '../components/Manage'
@@ -22,14 +21,13 @@ SwiperCore.use([Pagination])
 const Index: React.FC = () => {
 	const current = useCurrent()
 	const forecast = useForecast()
-	const { push } = useRouter()
 
 	React.useEffect(() => {
 		const city = localStorage.getItem('city')
 		if (city) {
 			state.selectedCity = JSON.parse(city)
 		} else {
-			push('/manage?reason=no_city')
+			state.showManage = true
 		}
 	}, [])
 
