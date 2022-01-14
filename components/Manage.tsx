@@ -9,7 +9,7 @@ import state from '../context/state'
 const Manage: React.FC = () => {
 	const [isOpen, setIsOpen] = React.useState(false)
 	const [cities, setCities] = React.useState<LSCity[]>([])
-	const { showManage } = useSnapshot(state)
+	const { showManage, selectedCity } = useSnapshot(state)
 
 	React.useEffect(() => {
 		let _cities = localStorage.getItem('cities')
@@ -30,7 +30,7 @@ const Manage: React.FC = () => {
 				as="div"
 			>
 				<header className="flex justify-between items-center">
-					<button onClick={() => (state.showManage = false)}>
+					<button onClick={() => (state.showManage = !!!selectedCity?.value)}>
 						<a className="flex items-center gap-2">
 							<svg
 								className="w-5 h-5"

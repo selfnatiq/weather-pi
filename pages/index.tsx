@@ -15,12 +15,15 @@ import state from '../context/state'
 import { roundByTwo } from '../lib/utils'
 import Loading from '../components/Loading'
 import Manage from '../components/Manage'
+import { useSnapshot } from 'valtio'
 
 SwiperCore.use([Pagination])
 
 const Index: React.FC = () => {
 	const current = useCurrent()
 	const forecast = useForecast()
+
+	const { selectedCity } = useSnapshot(state)
 
 	React.useEffect(() => {
 		const city = localStorage.getItem('city')
@@ -30,6 +33,10 @@ const Index: React.FC = () => {
 			state.showManage = true
 		}
 	}, [])
+
+	if (!selectedCity) {
+		return <Manage />
+	}
 
 	if (!current || !forecast) {
 		return <Loading />
