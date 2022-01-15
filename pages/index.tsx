@@ -43,85 +43,99 @@ const Index: React.FC = () => {
 	}
 
 	return (
-		<div className="container py-10 px-6 overflow-x-hidden select-none">
-			<Header />
-			<Swiper
-				slidesPerView={1}
-				spaceBetween={30}
-				loop={true}
-				pagination={{
-					clickable: true,
-				}}
-			>
-				<SwiperSlide>
-					<Card center>
-						<h2 className="text-lg">
-							{new Date(current.datetime.split(':')[0]).toLocaleDateString('de-DE', {
-								weekday: 'long',
-								year: 'numeric',
-								month: 'long',
-								day: 'numeric',
-							})}
-						</h2>
-						<p className="mt-5">
-							<span className="text-8xl">{current.temp}</span>
-							<span className="text-3xl">°C</span>
-						</p>
-						<p className="mt-10">Fühlt sich an wie {current.app_temp} °C</p>
-						<WeatherIcon
-							icon={current.weather.icon}
-							description={current.weather.description}
-						/>
-
-						<div className="flex space-x-6 mt-10">
-							<Sunset time={current.sunrise} level="HIGH" />
-							<Sunset time={current.sunset} level="LOW" />
-						</div>
-					</Card>
-				</SwiperSlide>
-
-				<SwiperSlide>
-					<Card>
-						<h2 className="text-xl">Weitere Details</h2>
-						<div className="flex flex-col gap-5 mt-8">
-							<DetailItem title="Druck" value={roundByTwo(current.pres) + ' mb'} />
-							<DetailItem
-								title="Windgeschwindigkeit"
-								value={roundByTwo(current.wind_spd) + ' m/s'}
+		<React.Fragment>
+			<main className="container relative h-screen py-4 px-6 overflow-hidden select-none">
+				<Header />
+				<Swiper
+					slidesPerView={1}
+					spaceBetween={30}
+					loop={true}
+					pagination={{
+						clickable: true,
+					}}
+				>
+					<SwiperSlide>
+						<Card center>
+							<h2 className="text-lg">
+								{new Date(current.datetime.split(':')[0]).toLocaleDateString(
+									'de-DE',
+									{
+										weekday: 'long',
+										year: 'numeric',
+										month: 'long',
+										day: 'numeric',
+									}
+								)}
+							</h2>
+							<p className="mt-5">
+								<span className="text-8xl">{current.temp}</span>
+								<span className="text-3xl">°C</span>
+							</p>
+							<p className="mt-10">Fühlt sich an wie {current.app_temp} °C</p>
+							<WeatherIcon
+								icon={current.weather.icon}
+								description={current.weather.description}
 							/>
-							<DetailItem
-								title="Windrichtung"
-								value={roundByTwo(current.wind_dir) + '°'}
-							/>
-							<DetailItem title="Wolken" value={roundByTwo(current.clouds) + '%'} />
-							<DetailItem
-								title="Sichtweite"
-								value={roundByTwo(current.vis) + ' km'}
-							/>
-							<DetailItem title="Feuchtigkeit" value={roundByTwo(current.rh) + '%'} />
+
+							<div className="flex space-x-6 mt-10">
+								<Sunset time={current.sunrise} level="HIGH" />
+								<Sunset time={current.sunset} level="LOW" />
+							</div>
+						</Card>
+					</SwiperSlide>
+
+					<SwiperSlide>
+						<Card>
+							<h2 className="text-xl">Weitere Details</h2>
+							<div className="flex flex-col gap-5 mt-8">
+								<DetailItem
+									title="Druck"
+									value={roundByTwo(current.pres) + ' mb'}
+								/>
+								<DetailItem
+									title="Windgeschwindigkeit"
+									value={roundByTwo(current.wind_spd) + ' m/s'}
+								/>
+								<DetailItem
+									title="Windrichtung"
+									value={roundByTwo(current.wind_dir) + '°'}
+								/>
+								<DetailItem
+									title="Wolken"
+									value={roundByTwo(current.clouds) + '%'}
+								/>
+								<DetailItem
+									title="Sichtweite"
+									value={roundByTwo(current.vis) + ' km'}
+								/>
+								<DetailItem
+									title="Feuchtigkeit"
+									value={roundByTwo(current.rh) + '%'}
+								/>
+							</div>
+						</Card>
+					</SwiperSlide>
+
+					<SwiperSlide>
+						<div className="mt-16 mb-5">
+							<h2 className="text-xl mb-5">Nächste 16 Tage</h2>
+							<div className="flex flex-col gap-6 max-h-[480px] overflow-y-scroll">
+								{forecast.map((fc) => (
+									<ForecastDay key={fc.valid_date} forecast={fc} />
+								))}
+							</div>
 						</div>
-					</Card>
-				</SwiperSlide>
+					</SwiperSlide>
 
-				<SwiperSlide>
-					<div className="mt-16 mb-5">
-						<h2 className="text-xl mb-5">Nächste 16 Tage</h2>
-						<div className="flex flex-col gap-6 max-h-[480px] overflow-y-scroll">
-							{forecast.map((fc) => (
-								<ForecastDay key={fc.valid_date} forecast={fc} />
-							))}
-						</div>
-					</div>
-				</SwiperSlide>
+					<div className="flex justify-between mt-10" />
+				</Swiper>
 
-				<div className="flex justify-between mt-10" />
-			</Swiper>
-			<p className="text-xs font-light italic mt-3">
-				Letztes Update um {new Date(current.ts * 1000).toLocaleTimeString('de-DE')}
-			</p>
-
+				<p className="text-xs font-light italic bottom-4 absolute">
+					Letztes Update um {new Date(current.ts * 1000).toLocaleTimeString('de-DE')}
+				</p>
+			</main>
 			<Manage />
-		</div>
+		</React.Fragment>
 	)
 }
 
