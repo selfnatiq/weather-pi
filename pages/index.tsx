@@ -43,7 +43,7 @@ const Index: React.FC = () => {
 	}
 
 	return (
-		<div className="container py-10 px-6 overflow-x-hidden">
+		<div className="container py-10 px-6 overflow-x-hidden select-none">
 			<Header />
 			<Swiper
 				slidesPerView={1}
