@@ -20,7 +20,7 @@ export type Current = {
     vis: number | null;
     rh: number;
     ts: number;
-    rain_fall: number | null;
+    rain_fall?: number;
 }
 
 export type ForecastResponse = {
