@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 import { useSnapshot } from 'valtio'
 import state from '../context/state'
-import { api, API_KEY, isDev } from '../lib/constants'
+import { api, API_KEY, isDev, backend, isLocal } from '../lib/constants'
 import { CurrentResponse } from '../lib/types'
 
 const mock: CurrentResponse =
@@ -9,7 +9,14 @@ const mock: CurrentResponse =
 
 const useCurrent = () => {
 	const { selectedCity } = useSnapshot(state)
-	const { data } = useSWR<CurrentResponse>(!isDev && selectedCity ? `current-${selectedCity.value}` : null, () => fetch(`${api}/current?city_id=${selectedCity?.value}&lang=de&key=${API_KEY}`).then(res => res.json()))
+	const uri = isLocal(selectedCity?.value) ?
+		`/api/current` :
+		`${api}/current?city_id=${selectedCity?.value}&lang=de&key=${API_KEY}`
+
+	const { data } = useSWR<CurrentResponse>(
+		!isDev && selectedCity ?
+			`current-${selectedCity.value}` : null,
+		() => fetch(uri).then(res => res.json()))
 
 	return isDev ? mock.data[0] : data?.data[0]
 }

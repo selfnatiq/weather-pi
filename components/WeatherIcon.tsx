@@ -8,7 +8,11 @@ const WeatherIcon: React.FC<Props> = ({ icon, description }) => {
 		<div className="mt-10 flex flex-col items-center">
 			<img
 				className="w-40"
-				src={`https://www.weatherbit.io/static/img/icons/${icon}.png`}
+				src={
+					icon === 'local'
+						? '/images/local.png'
+						: `https://www.weatherbit.io/static/img/icons/${icon}.png`
+				}
 				alt={description}
 			/>
 			<p className="mt-3 font-light">{description}</p>

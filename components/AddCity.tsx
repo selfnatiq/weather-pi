@@ -11,7 +11,7 @@ interface Props {
 }
 
 const AddCity: React.FC<Props> = ({ setIsOpen, setCities }) => {
-	let { data } = useSWR<City[]>('/cities', citiesFetcher, {
+	const { data } = useSWR<City[]>('/cities', citiesFetcher, {
 		refreshInterval: 60 * 10000,
 		revalidateIfStale: false,
 	})

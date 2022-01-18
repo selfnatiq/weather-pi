@@ -46,7 +46,7 @@ const Manage: React.FC = () => {
 									d="M15 19l-7-7 7-7"
 								/>
 							</svg>
-							<p>Stadt wählen</p>
+							<p>Ort auswählen</p>
 						</a>
 					</button>
 					<button onClick={() => setIsOpen(true)}>
@@ -69,6 +69,8 @@ const Manage: React.FC = () => {
 
 				<main>
 					<div className="flex flex-col mt-10 px-1 gap-6">
+						<ManageItem city={{ label: 'gibb', value: 999 }} setCities={setCities} />
+
 						{cities.length ? (
 							cities.map((city) => (
 								<ManageItem key={city.value} city={city} setCities={setCities} />

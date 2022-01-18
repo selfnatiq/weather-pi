@@ -16,6 +16,7 @@ import { roundByTwo } from '../lib/utils'
 import Loading from '../components/Loading'
 import Manage from '../components/Manage'
 import { useSnapshot } from 'valtio'
+import { isLocal } from '../lib/constants'
 
 SwiperCore.use([Pagination])
 
@@ -68,10 +69,12 @@ const Index: React.FC = () => {
 								)}
 							</h2>
 							<p className="mt-5">
-								<span className="text-8xl">{current.temp}</span>
+								<span className="text-8xl">{roundByTwo(current.temp)}</span>
 								<span className="text-3xl">°C</span>
 							</p>
-							<p className="mt-10">Fühlt sich an wie {current.app_temp} °C</p>
+							<p className="mt-10">
+								Fühlt sich an wie {roundByTwo(current.app_temp)} °C
+							</p>
 							<WeatherIcon
 								icon={current.weather.icon}
 								description={current.weather.description}
@@ -102,11 +105,11 @@ const Index: React.FC = () => {
 								/>
 								<DetailItem
 									title="Wolken"
-									value={roundByTwo(current.clouds) + '%'}
+									value={current.clouds ? roundByTwo(current.clouds) + '%' : '-'}
 								/>
 								<DetailItem
 									title="Sichtweite"
-									value={roundByTwo(current.vis) + ' km'}
+									value={current.vis ? roundByTwo(current.vis) + ' km' : '-'}
 								/>
 								<DetailItem
 									title="Feuchtigkeit"
@@ -116,16 +119,18 @@ const Index: React.FC = () => {
 						</Card>
 					</SwiperSlide>
 
-					<SwiperSlide>
-						<div className="mt-16 mb-5">
-							<h2 className="text-xl mb-5">Nächste 16 Tage</h2>
-							<div className="flex flex-col gap-6 max-h-[480px] overflow-y-scroll">
-								{forecast.map((fc) => (
-									<ForecastDay key={fc.valid_date} forecast={fc} />
-								))}
+					{!isLocal(selectedCity.value) && (
+						<SwiperSlide>
+							<div className="mt-16 mb-5">
+								<h2 className="text-xl mb-5">Nächste 16 Tage</h2>
+								<div className="flex flex-col gap-6 max-h-[480px] overflow-y-scroll">
+									{forecast.map((fc) => (
+										<ForecastDay key={fc.valid_date} forecast={fc} />
+									))}
+								</div>
 							</div>
-						</div>
-					</SwiperSlide>
+						</SwiperSlide>
+					)}
 
 					<div className="flex justify-between mt-10" />
 				</Swiper>
